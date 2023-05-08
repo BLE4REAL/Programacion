@@ -12,7 +12,7 @@
             int cantidadCalles = 0;
             bool datoCorrecto = false;
 
-            while (datoCorrecto == false)
+            do
             {
                 try
                 {
@@ -30,45 +30,57 @@
                     Console.WriteLine(elError.Message);
 
                 }
+            }
+            while (!datoCorrecto);
 
                 //Definimos las catacterísticas de las calles
 
-                string[] losdeterioros = { "Hundida", "Agrietada", "Ondulada" };
-                int[,] laslongitudes = new int[100, 500];
-                float[,] lostramos = new float[20, 60];
+            string[] losdeterioros = { "Hundimiento", "Agrietamiento", "Onduladamiento" };
+            int[,] laslongitudes = new int[100, 500];
+            float[,] lostramos = new float[20, 60];
 
                 Random aleatorio = new Random();
                 Calle[] calles = new Calle[cantidadCalles];
 
-                for (int i = 0; i < calles.Length; i++)
-                {
-                    calles[i] = new Calle();
-                    calles[i].Longitud = aleatorio.Next(100, 501);
-                    calles[i].Tramo = aleatorio.Next(20, 61);
-                    calles[i].Deterioro = losdeterioros[aleatorio.Next(losdeterioros.Length)];
-
-                }
-
-                VisualizaInformacionCalles(calles);
-
-            }
-
-            static void VisualizaInformacionCalles(Calle[] lascalles)
+            for (int i = 0; i < calles.Length; i++)
             {
-                Console.WriteLine($"\n La cantidad de calles que hay en total {lascalles.Length} y se encuentran de la siguiente manera");
+                calles[i] = new Calle();
+                calles[i].Longitud = aleatorio.Next(100, 501);
+                calles[i].Tramo = 20 + aleatorio.NextDouble() * (60 - 20);
+                calles[i].Deterioro = losdeterioros[aleatorio.Next(losdeterioros.Length)];
 
-                int contador = 1;
-                foreach (Calle unacalle in lascalles)
-                {
-                    Console.WriteLine($"\nCalle No. {contador}, \n" +
-                        $"tiene una longitud de {unacalle.Longitud} " +
-                        $"metros y un {unacalle.Tramo}% de esta " +
-                        $"se encuentra {unacalle.Deterioro}");
-                    contador++;
+            }
+                //Visualización de las carácterísticas de las calles
+                
+                Console.WriteLine("\n\n--RESULTADOS--\n");
 
-                }
+            for (int i = 0; i <calles.Length; i++)
+            {
+                Console.WriteLine($"\nCalle No. {(i + 1)}: " +
+                    $"\nLongitud de la calle: {calles[i].Longitud}, " +
+                    $"tramo afectado: {calles[i].Tramo.ToString(".00")}%," +
+                    $"Longitud de la calle: {calles[i].Longitud}, " +
+                    $"Deterioro: {calles[i].Deterioro}, ");
+
             }
 
+            //Visualización de los totales por cada tipo de deterioro
+
+            int[] TotalAfectacionesPorDeterioro = TotalizaAfectacionesPorDeterioro(calles, losdeterioros);
+            double[] CantidadPavimento = ObtieneCantidadCallePavimentadaPorDeterioro(calles, losdeterioros);
+            double[] LongitudPromedio = ObtieneLongitudPronedioTramosPorDeterioro(calles, losdeterioros);
+
+            Console.WriteLine("\n**-TOTALES POR CADA TIPO DE DETERIORO-**\n");
+            
+            for (int i = 0; i < losdeterioros.Length; i++)
+            {
+                Console.WriteLine($"\n{losdeterioros[i]}:\n" +
+                    $"Total de afectaciones: {TotalAfectacionesPorDeterioro[i]}"+
+                    $"Total de metros pavimentados: {CantidadPavimento[i].ToString(".00")} mts. "+
+                    $"De una longitud promedio de {LongitudPromedio[i].ToString(".00")} mts.");
+
+            }
         }
+
     }
 }
