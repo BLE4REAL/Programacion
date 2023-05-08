@@ -48,7 +48,6 @@
                 calles[i].Longitud = aleatorio.Next(100, 501);
                 calles[i].Tramo = 20 + aleatorio.NextDouble() * (60 - 20);
                 calles[i].Deterioro = losdeterioros[aleatorio.Next(losdeterioros.Length)];
-
             }
                 //Visualización de las carácterísticas de las calles
                 
@@ -61,14 +60,13 @@
                     $"tramo afectado: {calles[i].Tramo.ToString(".00")}%," +
                     $"Longitud de la calle: {calles[i].Longitud}, " +
                     $"Deterioro: {calles[i].Deterioro}, ");
-
             }
 
             //Visualización de los totales por cada tipo de deterioro
 
             int[] TotalAfectacionesPorDeterioro = TotalizaAfectacionesPorDeterioro(calles, losdeterioros);
             double[] CantidadPavimento = ObtieneCantidadCallePavimentadaPorDeterioro(calles, losdeterioros);
-            double[] LongitudPromedio = ObtieneLongitudPronedioTramosPorDeterioro(calles, losdeterioros);
+            double[] LongitudPromedio = ObtieneLongitudPromedioTramosPorDeterioro(calles, losdeterioros);
 
             Console.WriteLine("\n**-TOTALES POR CADA TIPO DE DETERIORO-**\n");
             
@@ -78,9 +76,45 @@
                     $"Total de afectaciones: {TotalAfectacionesPorDeterioro[i]}"+
                     $"Total de metros pavimentados: {CantidadPavimento[i].ToString(".00")} mts. "+
                     $"De una longitud promedio de {LongitudPromedio[i].ToString(".00")} mts.");
-
             }
         }
 
+        static int[] TotalizaAfectacionesPorDeterioro(Calle[] calles, string[] losdeterioros)
+        {
+            int[] TotalAfectaciones = new int[losdeterioros.Length];
+
+            for (int i = 0; i < losdeterioros.Length; i++)
+                for (int j = 0; < losdeterioros.Length; j++)
+                    if (calles[i].Deterioro == losdeterioros[j])
+                        TotalAfectaciones[j]++;
+
+            return TotalAfectaciones;
+        }
+
+        static double[] ObtieneCantidadCallePavimentadaPorDeterioro(Calle[] calles, string[] losdeterioros)
+        {
+            double[] Cantidad = new double[losdeterioros.Length];
+
+            for (int i = 0; i < calles.Length; i++)
+                for (int j = 0; < calles.Length; j++)
+                    if (calles[i].Deterioros == losdeterioros[j])
+                    {
+                        Cantidad[j] += calles[i].Longitud *
+                            (calles[i].Tramo / 100);
+                    }
+            return Cantidad;
+        }
+
+        static double[] ObtieneLongitudPromedioTramosPorDeterioro(Calle[] calles, string[] losdeterioros)
+        {
+            int[] TotalAfectaciones = TotalizaAfectacionesPorDeterioro(calles, losdeterioros)
+            double[] LongitudPromedio = new double[losdeterioros.Length];
+            double[] CantidadPavimentoPorDeterioro = ObtieneCantidadCallePavimentadaPorDeterioro(calles, losdeterioros);
+
+            for (int i = 0; i < losdeterioros.Length; i++)
+                LongitudPromedio[i] = CantidadPavimentoPorDeterioro[i] / TotalAfectaciones[i];
+
+            return LongitudPromedio;
+        }
     }
 }
