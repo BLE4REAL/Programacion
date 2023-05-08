@@ -4,78 +4,71 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Se desea implementar un sistema de administración vial (SAV) que permita simular el proceso de reparación de las calles de acuerdo con las restricciones planteadas");
-            Console.WriteLine("Se evaluarán tramos y se identificará cuántos metros de calle se pavimentaron por cada tipo de deterioro");
-            int LosTramos = 100;
-            int[] MetrosArregladosHundimiento = new int[LosTramos];
+            Console.WriteLine("Programa para totalizar la cantidad de calles que gueron pavimentadas");
+            Console.WriteLine("Se encuentran casos de hundimientos, agrietamientos y ondulamientos por tramos");
+            Console.WriteLine("La longitud relativa de los tramos abarca entre [20%, 60%]");
+            Console.WriteLine("La longitud total de las calles está entre [100 mts, 500 mts]\n\n");
 
-            int[] MetrosArregladosAgrietamientos = new int[LosTramos];
+            int cantidadCalles = 0;
+            bool datoCorrecto = false;
 
-            int[] MetrosArregladosParaOndulamiento = new int[LosTramos];
-
-            int[] longitudesParaLosTramos = new int[LosTramos];
-
-            int TotalMPH = 0;
-
-            int TotalMPA = 0;
-
-            int TotalMPO = 0;
-
-            int totalLongitudesTramos = 0;
-
-            Random aleatorio = new Random();
-
-            for (int i = 0; i < LosTramos; i++)
+            while (datoCorrecto == false)
             {
                 try
                 {
-                    Calle calle = new Calle();
-                    calle.Longitud = aleatorio.Next(100, 501);
-                    int longitudTramo = aleatorio.Next((int)(calle.Longitud * 0.2), (int)(calle.Longitud * 0.6));
-                    longitudesParaLosTramos[i] = longitudTramo;
+                    Console.WriteLine("\nIntroduzca la cantidad de calles que hay");
+                    cantidadCalles = int.Parse(Console.ReadLine()!);
 
-                    Console.WriteLine("Calle " + (i + 1));
-                    Console.WriteLine("Longitud total de la calle: " + calle.Longitud);
-                    Console.WriteLine("Longitud del tramo: " + longitudTramo);
-
-                    if (longitudTramo >= (int)(calle.Longitud * 0.5))
-                    {
-                        MetrosArregladosHundimiento[i] = longitudTramo;
-                        TotalMPH += longitudTramo;
-                        Console.WriteLine("Metros pavimentados debid hundimientos: " + longitudTramo);
-                    }
-                    else if (longitudTramo >= (int)(calle.Longitud * 0.3))
-                    {
-                        MetrosArregladosAgrietamientos[i] = longitudTramo;
-                        TotalMPA += longitudTramo;
-                        Console.WriteLine("Metros pavimentados debido a los agrietamientos: " + longitudTramo);
-                    }
+                    if (cantidadCalles > 0)
+                        datoCorrecto = true;
                     else
-                    {
-                        MetrosArregladosParaOndulamiento[i] = longitudTramo;
-                        TotalMPO += longitudTramo;
-                        Console.WriteLine("Metros pavimentados debido a las ondulaciones: " + longitudTramo);
-                    }
-
-                    totalLongitudesTramos += longitudTramo;
+                        Console.WriteLine("La cantidad tiene que ser un número positivo. Intenetelo nuevamente");
                 }
-                catch (Exception Elerror)
+                catch (FormatException elError)
                 {
-                    Console.WriteLine("Hubo una falla en el programa:) " + Elerror.Message);
+                    Console.WriteLine("La cantidad tiene que ser un número entero positivo. Intentelo nuevamente");
+                    Console.WriteLine(elError.Message);
+
                 }
 
-                Console.WriteLine();
+                //Definimos las catacterísticas de las calles
 
-                Console.WriteLine("Los metros pavimentados por hundimientos fueron: " + TotalMPH);
-                Console.WriteLine("Los metros pavimentados por agrietamientos fueron: " + TotalMPA);
-                Console.WriteLine("Los metros pavimentados por ondulaciones fueron: " + TotalMPO);
+                string[] losdeterioros = { "Hundida", "Agrietada", "Ondulada" };
+                int[,] laslongitudes = new int[100, 500];
+                float[,] lostramos = new float[20, 60];
 
-                double longitudPromedio = (double)totalLongitudesTramos / LosTramos;
+                Random aleatorio = new Random();
+                Calle[] calles = new Calle[cantidadCalles];
 
+                for (int i = 0; i < calles.Length; i++)
+                {
+                    calles[i] = new Calle();
+                    calles[i].Longitud = aleatorio.Next(100, 501);
+                    calles[i].Tramo = aleatorio.Next(20, 61);
+                    calles[i].Deterioro = losdeterioros[aleatorio.Next(losdeterioros.Length)];
 
+                }
+
+                VisualizaInformacionCalles(calles);
 
             }
+
+            static void VisualizaInformacionCalles(Calle[] lascalles)
+            {
+                Console.WriteLine($"\n La cantidad de calles que hay en total {lascalles.Length} y se encuentran de la siguiente manera");
+
+                int contador = 1;
+                foreach (Calle unacalle in lascalles)
+                {
+                    Console.WriteLine($"\nCalle No. {contador}, \n" +
+                        $"tiene una longitud de {unacalle.Longitud} " +
+                        $"metros y un {unacalle.Tramo}% de esta " +
+                        $"se encuentra {unacalle.Deterioro}");
+                    contador++;
+
+                }
+            }
+
         }
     }
 }
-
