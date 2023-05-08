@@ -1,26 +1,22 @@
 ﻿using System;
 
-public class Calle
+class Calle
 {
-    //Atributos de la clase
-    private string tipoDeterioro;
+    //atributos de la clase
+    private string deteriroro;
     private int longitud;
-    private double tramoAfectado;
+    private float tramo;
 
-    //Constructor de la clase
+    //constructor de la clase
+
     public Calle()
     {
-        tipoDeterioro = string.Empty;
         longitud = 0;
-        tramoAfectado = 0;
+        tramo = 0;
+        deteriroro = string.Empty;
     }
 
-    //Propiedades vinculadas a los atributos
-    public string TipoDeterioro
-    {
-        get { return tipoDeterioro; }
-        set { tipoDeterioro = value; }
-    }
+    //Porpiedades de acceso de los atributos
 
     public int Longitud
     {
@@ -28,10 +24,16 @@ public class Calle
         set { longitud = value; }
     }
 
-    public double TramoAfectado
+    public float Tramo
     {
-        get { return tramoAfectado; }
-        set { tramoAfectado = value; }
+        get { return tramo; }
+        set { tramo = value; }
+    }
+
+    public string Deterioro
+    {
+        get { return deteriroro; }
+        set { deteriroro = value; }
     }
 }
 }
