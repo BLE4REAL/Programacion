@@ -3,10 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace PruebaTramos
 {
     [TestClass]
-    public class UnitTest1
+    public class PruebasPavimentacion
     {
         [TestMethod]
-        public void TestMethod1()
+        public void PruebaLongitudPavimentada()
         {
         }
     }
